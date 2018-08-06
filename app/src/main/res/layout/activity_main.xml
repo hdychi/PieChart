@@ -15,4 +15,9 @@
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/pie_chart"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="addItem"
+        android:id="@+id/add_btn"/>
 </android.support.constraint.ConstraintLayout>

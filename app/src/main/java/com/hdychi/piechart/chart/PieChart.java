@@ -58,6 +58,9 @@ public class PieChart extends View {
         init();
     }
 
+    /**
+     * 初始化画笔以及其他变量
+     */
     private void init() {
         pieChartItems = new ArrayList<>();
         decimalFormat = new DecimalFormat("#.00");
@@ -86,6 +89,7 @@ public class PieChart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        //圆心、半径、圆所在矩形的计算
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
         int radius = Math.min(getWidth() / 10 * 3, getHeight() / 10 * 3);
@@ -93,10 +97,12 @@ public class PieChart extends View {
         int top = centerY - radius;
         int right = centerX + radius;
         int bottom = centerY + radius;
+        //没有数据时，显示提示信息
         if (pieChartItems.size() == 0) {
             canvas.drawText(EMPTY_MSG, centerX, centerY, mPaintForMsg);
             return;
         }
+        //计算总共的数据量
         int totalCnt = 0;
         for (PieChartItem item : pieChartItems) {
             totalCnt += item.getCount();
@@ -108,8 +114,10 @@ public class PieChart extends View {
             mPaintForArc.setColor(defaultColors[i % defaultColors.length]);
             float percent = pieChartItem.getCount() / (float) totalCnt;
             float sweepAngle = percent * 360f;
+            //根据所占百分比画出扇形
             canvas.drawArc(left, top, right, bottom, nowAngle, -sweepAngle, true,
                     mPaintForArc);
+            //画出数据标明线
             float lineLen = radius + Math.min(radius / 5 , radius / 5);
             float startX = (float) (centerX
                     + radius * 0.75 * Math.cos(Math.PI * (-nowAngle + sweepAngle / 2) / 180));
@@ -125,6 +133,7 @@ public class PieChart extends View {
             endX = endX + (endX < centerX ? -(lineLen - radius) / 2:(lineLen - radius) / 2);
             path.lineTo(endX,endY);
             canvas.drawPath(path,mPaintForLine);
+            //根据扇形的位置决定信息文字的左右对齐
             if (endX < centerX) {
                 mPaintForName.setTextAlign(Paint.Align.RIGHT);
                 mPaintForCount.setTextAlign(Paint.Align.RIGHT);
@@ -135,6 +144,7 @@ public class PieChart extends View {
             }
             String name = pieChartItem.getName();
             String count = decimalFormat.format(percent * 100) + "%";
+            //当要显示文字超过view的范围时，缩小字的大小
             float maxTextWidth = Math.max(mPaintForName.measureText(name),
                     mPaintForCount.measureText(count));
             while (endX + maxTextWidth > getWidth() || endX - maxTextWidth < 0) {
@@ -144,6 +154,7 @@ public class PieChart extends View {
                 maxTextWidth = Math.max(mPaintForName.measureText(name),
                         mPaintForCount.measureText(count));
             }
+            //绘制当前项的信息
             canvas.drawText(name,endX,endY, mPaintForName);
             canvas.drawText(count, endX,endY + mItemTextSize + DEFAULT_LINE_OFFSET,
                     mPaintForCount);
@@ -163,13 +174,16 @@ public class PieChart extends View {
 
     public void addItem(PieChartItem item) {
         pieChartItems.add(item);
+        invalidate();
     }
 
     public void clear() {
         pieChartItems.clear();
+        invalidate();
     }
 
     public void removeAt(int index) {
         pieChartItems.remove(index);
+        invalidate();
     }
 }

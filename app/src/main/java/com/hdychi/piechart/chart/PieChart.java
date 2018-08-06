@@ -16,11 +16,12 @@ import java.util.List;
 public class PieChart extends View {
     private static final String EMPTY_MSG = "No Data Available";
     private static final float MSG_TEXT_SIZE = 50.0f;
-    private static final float ITEM_TEXT_SIZE = 50.0F;
     private static final int DEFAULT_WIDTH = 800;
     private static final int DEFAULT_HEIGHT = 800;
     private static final int DEFAULT_LINE_OFFSET = 10;
+
     private List<PieChartItem> pieChartItems;
+    private static float mItemTextSize= 50.0f;
     private Paint mPaintForMsg;
     private Paint mPaintForArc;
     private Paint mPaintForName;
@@ -68,12 +69,12 @@ public class PieChart extends View {
         mPaintForName = new Paint();
         mPaintForName.setTextAlign(Paint.Align.CENTER);
         mPaintForName.setColor(Color.BLACK);
-        mPaintForName.setTextSize(ITEM_TEXT_SIZE);
+        mPaintForName.setTextSize(mItemTextSize);
 
         mPaintForCount = new Paint();
         mPaintForCount.setTextAlign(Paint.Align.CENTER);
         mPaintForCount.setColor(Color.BLACK);
-        mPaintForCount.setTextSize(ITEM_TEXT_SIZE);
+        mPaintForCount.setTextSize(mItemTextSize);
 
         mPaintForArc = new Paint();
         mPaintForLine = new Paint();
@@ -132,9 +133,20 @@ public class PieChart extends View {
                 mPaintForName.setTextAlign(Paint.Align.LEFT);
                 mPaintForCount.setTextAlign(Paint.Align.LEFT);
             }
-            canvas.drawText(pieChartItem.getName(),endX,endY, mPaintForName);
-            canvas.drawText(decimalFormat.format(percent * 100) + "%",
-                    endX,endY + ITEM_TEXT_SIZE + DEFAULT_LINE_OFFSET,mPaintForCount);
+            String name = pieChartItem.getName();
+            String count = decimalFormat.format(percent * 100) + "%";
+            float maxTextWidth = Math.max(mPaintForName.measureText(name),
+                    mPaintForCount.measureText(count));
+            while (endX + maxTextWidth > getWidth() || endX - maxTextWidth < 0) {
+                mItemTextSize =  mItemTextSize * 0.9f;
+                mPaintForName.setTextSize(mItemTextSize);
+                mPaintForCount.setTextSize(mItemTextSize);
+                maxTextWidth = Math.max(mPaintForName.measureText(name),
+                        mPaintForCount.measureText(count));
+            }
+            canvas.drawText(name,endX,endY, mPaintForName);
+            canvas.drawText(count, endX,endY + mItemTextSize + DEFAULT_LINE_OFFSET,
+                    mPaintForCount);
             nowAngle -= sweepAngle;
         }
     }

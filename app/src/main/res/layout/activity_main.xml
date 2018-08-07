@@ -20,4 +20,5 @@
         android:layout_height="wrap_content"
         android:text="addItem"
         android:id="@+id/add_btn"/>
+
 </android.support.constraint.ConstraintLayout>

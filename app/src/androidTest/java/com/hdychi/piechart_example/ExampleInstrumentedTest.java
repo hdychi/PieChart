@@ -1,4 +1,4 @@
-package com.hdychi.piechart;
+package com.hdychi.piechart_example;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

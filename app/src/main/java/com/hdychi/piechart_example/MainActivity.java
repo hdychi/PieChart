@@ -1,12 +1,13 @@
-package com.hdychi.piechart;
+package com.hdychi.piechart_example;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.hdychi.piechart.chart.PieChart;
-import com.hdychi.piechart.chart.PieChartItem;
+import com.hdychi.piechart.PieChart;
+import com.hdychi.piechart.PieChartItem;
+
 
 public class MainActivity extends AppCompatActivity {
     private PieChart pieChart;

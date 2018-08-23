@@ -1,4 +1,4 @@
-package com.hdychi.piechart.chart;
+package com.hdychi.piechart;
 
 public class PieChartUtil {
     public static float toArc(float degree) {

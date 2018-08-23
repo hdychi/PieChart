@@ -1,11 +1,10 @@
-package com.hdychi.piechart.chart;
+package com.hdychi.piechart;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -206,9 +205,10 @@ public class PieChart extends View {
                     float nowY = event.getY() - centerY;
                     angle += (Math.atan2(nowY, nowX) - Math.atan2(lastY - centerY, lastX - centerX))
                             * 180 /Math.PI;
+                    invalidate();
                     lastX = event.getX();
                     lastY = event.getY();
-                    invalidate();
+                    return true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
